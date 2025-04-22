@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            background-color: #0f171e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #1a242f;
+            padding: 15px;
+            font-size: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        h3 {
+            color: #E07A5F;
+        }
+
+        .campaign-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .campaign-card {
+            background: #1a242f;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #E07A5F;
+            transition: 0.3s;
+        }
+
+        .campaign-card:hover {
+            transform: scale(1.02);
+            background: #22303f;
+        }
+
+        .campaign-card button {
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #E07A5F !important;
+            border: none !important;
+        }
+
+        button:hover {
+            background-color: #E07A5F !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><h2>Traditional Marketing Campaigns Management System</h2></a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Campaign Form -->
+            <div class="col-md-4">
+                <h3 id="formTitle">Create a New Campaign</h3>
+                <form id="campaignForm">
+                    <input type="hidden" id="campaignId">
+                    <div class="mb-3">
+                        <label>Campaign Name</label>
+                        <input type="text" id="campaignName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <textarea id="campaignDescription" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Start Date</label>
+                        <input type="date" id="campaignDate" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Budget</label>
+                        <input type="number" id="campaignBudget" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Target Audience</label>
+                        <input type="text" id="campaignAudience" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>Category</label>
+                        <select id="campaignCategory" class="form-control">
+                            <option>Social Media</option>
+                            <option>TV Ads</option>
+                            <option>Billboards</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>ROI (%)</label>
+                        <input type="number" id="campaignROI" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <select id="campaignStatus" class="form-control">
+                            <option>Planned</option>
+                            <option>Ongoing</option>
+                            <option>Completed</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary w-100" onclick="saveCampaign()">Save Campaign</button>
+                </form>
+            </div>
+
+            <!-- Campaign List -->
+            <div class="col-md-8">
+                <h3>Campaigns</h3>
+                <div id="campaignList" class="campaign-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let campaigns = JSON.parse(localStorage.getItem("campaigns")) || [];
+        let editingIndex = -1;
+
+        // Save or update campaign
+        function saveCampaign() {
+            const id = document.getElementById('campaignId').value || Date.now();
+            const name = document.getElementById('campaignName').value.trim();
+            const description = document.getElementById('campaignDescription').value.trim();
+            const date = document.getElementById('campaignDate').value;
+            const budget = document.getElementById('campaignBudget').value;
+            const audience = document.getElementById('campaignAudience').value.trim();
+            const category = document.getElementById('campaignCategory').value;
+            const roi = document.getElementById('campaignROI').value;
+            const status = document.getElementById('campaignStatus').value;
+
+            if (!name || !date || !budget) {
+                alert('Please fill out all required fields!');
+                return;
+            }
+
+            const campaign = { id, name, description, date, budget, audience, category, roi, status };
+
+            if (editingIndex !== -1) {
+                campaigns[editingIndex] = campaign;
+                editingIndex = -1;
+            } else {
+                campaigns.push(campaign);
+            }
+
+            localStorage.setItem("campaigns", JSON.stringify(campaigns));
+            renderCampaigns();
+            resetForm();
+        }
+
+        // Render campaigns
+        function renderCampaigns() {
+            const list = document.getElementById("campaignList");
+            list.innerHTML = "";
+
+            campaigns.forEach((campaign, index) => {
+                const div = document.createElement("div");
+                div.classList.add("campaign-card");
+                div.innerHTML = `
+                    <h5>${campaign.name}</h5>
+                    <p><strong>Description:</strong> ${campaign.description || "No description"}</p>
+                    <p><strong>Date:</strong> ${campaign.date}</p>
+                    <p><strong>Budget:</strong> $${campaign.budget}</p>
+                    <p><strong>Category:</strong> ${campaign.category}</p>
+                    <p><strong>Status:</strong> ${campaign.status}</p>
+                    <button class="btn btn-sm btn-warning" onclick="editCampaign(${index})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteCampaign(${index})">Delete</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        // Edit campaign
+        function editCampaign(index) {
+            const campaign = campaigns[index];
+
+            document.getElementById('campaignId').value = campaign.id;
+            document.getElementById('campaignName').value = campaign.name;
+            document.getElementById('campaignDescription').value = campaign.description;
+            document.getElementById('campaignDate').value = campaign.date;
+            document.getElementById('campaignBudget').value = campaign.budget;
+            document.getElementById('campaignAudience').value = campaign.audience;
+            document.getElementById('campaignCategory').value = campaign.category;
+            document.getElementById('campaignROI').value = campaign.roi;
+            document.getElementById('campaignStatus').value = campaign.status;
+
+            document.getElementById('formTitle').innerText = "Edit Campaign";
+            editingIndex = index;
+        }
+
+        // Delete campaign
+        function deleteCampaign(index) {
+            campaigns.splice(index, 1);
+            localStorage.setItem("campaigns", JSON.stringify(campaigns));
+            renderCampaigns();
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById("campaignForm").reset();
+            document.getElementById('formTitle').innerText = "Create a New Campaign";
+        }
+
+        // Load campaigns on startup
+        renderCampaigns();
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Campaign Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            background-color: #0f171e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #1a242f;
+            padding: 15px;
+            font-size: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .section-card {
+            background: #1a242f;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #E07A5F;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .section-card:hover {
+            background: #22303f;
+        }
+
+        .btn-custom {
+            background-color: #E07A5F !important;
+            border: none !important;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #007ba7 !important;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            border: 1px solid #E07A5F;
+            color: white;
+            margin-right: 0;
+        }
+
+        .btn-login:hover {
+            background-color: #E07A5F;
+        }
+
+        .btn-signup {
+            background-color: #E07A5F;
+            border: none;
+            color: white;
+            margin-right: 0px;
+        }
+
+        .btn-signup:hover {
+            background-color: #E07A5F;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><h2>Campaign Management System</h2></a>
+            
+            <div>
+                <button class="btn btn-login" onclick="redirectTo('login.html')">Login</button>
+                <button class="btn btn-signup" onclick="redirectTo('signup.html')">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Welcome to the Traditional Marketing Campaign Management System</h2>
+        <p> It enables campaign planning, audience segmentation, budgeting, asset management, compliance tracking, and performance analytics, 
+            ensuring optimized marketing strategies. The system integrates CRM, analytics tools, and collaboration features for efficiency. 🚀</p>
+
+        <!-- Campaigns Section -->
+        <div class="section-card" onclick="redirectTo('index.html')">
+            <h3>📢 Campaign Management</h3>
+            <p>Create, edit, and track your marketing campaigns with ease.</p>
+            <button class="btn btn-custom">Go to Campaigns</button>
+        </div>
+
+        <!-- Compliance & Legal Tracking Section -->
+        <div class="section-card" onclick="redirectTo('compliance.html')">
+            <h3>⚖️ Compliance & Offline Reporting</h3>
+            <p>Ensure all campaigns meet legal regulations and track offline channels.</p>
+            <button class="btn btn-custom">Go to Compliance</button>
+        </div>
+
+        
+    </div>
+
+    <script>
+        function redirectTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>

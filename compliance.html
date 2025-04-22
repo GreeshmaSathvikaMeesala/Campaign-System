@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance & Offline Reporting</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            background-color: #0f171e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #1a242f;
+            padding: 15px;
+            font-size: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin-top: 40px;
+        }
+
+        .section-card {
+            background: #1a242f;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #E07A5F;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .section-card:hover {
+            background: #22303f;
+        }
+
+        .btn-custom {
+            background-color: #E07A5F !important;
+            border: none !important;
+        }
+
+        .btn-custom:hover {
+            background-color: #E07A5F !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Marketing Campaigns</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h3>Compliance & Offline Channel Reporting</h3>
+        
+        <!-- Compliance Section -->
+        <div class="section-card">
+            <h4>Compliance & Legal Tracking</h4>
+            <p>Ensure all campaigns adhere to industry regulations, advertising standards, and insurance laws.</p>
+            <label for="approvalStatus">Approval Status:</label>
+            <select id="approvalStatus" class="form-select">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+            <button class="btn btn-custom mt-2" onclick="trackCompliance()">Track Compliance</button>
+            <p id="complianceStatus" class="mt-2"></p>
+        </div>
+
+        <!-- Offline Channel Tracking -->
+        <div class="section-card">
+            <h4>Offline Channel Reporting</h4>
+            <p>Monitor effectiveness of direct mail campaigns and billboards using unique tracking codes.</p>
+            <label for="trackingCode">Enter Tracking Code:</label>
+            <input type="text" id="trackingCode" class="form-control" placeholder="e.g., QR12345">
+            <button class="btn btn-custom mt-2" onclick="trackOfflineCampaign()">Track Campaign</button>
+            <p id="trackingResult" class="mt-2"></p>
+        </div>
+
+        <button class="btn btn-primary back-btn" onclick="goBack()">Back to Dashboard</button>
+    </div>
+
+    <script>
+        function trackCompliance() {
+            const status = document.getElementById("approvalStatus").value;
+            document.getElementById("complianceStatus").innerHTML = `Compliance Status: <strong>${status}</strong>`;
+        }
+
+        function trackOfflineCampaign() {
+            const code = document.getElementById("trackingCode").value;
+            if (code) {
+                document.getElementById("trackingResult").innerHTML = `Campaign with Tracking Code <strong>${code}</strong> is being monitored.`;
+            } else {
+                document.getElementById("trackingResult").innerHTML = `<span style="color:red;">Please enter a valid tracking code.</span>`;
+            }
+        }
+
+        function goBack() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
